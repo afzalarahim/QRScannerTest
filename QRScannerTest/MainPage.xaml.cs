@@ -1,9 +1,9 @@
-﻿namespace QRScannerTest
+﻿
+
+namespace QRScannerTest
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
-
         public MainPage()
         {
             InitializeComponent();
@@ -11,7 +11,7 @@
             {
                 Formats = ZXing.Net.Maui.BarcodeFormat.QrCode,
                 AutoRotate = true,
-                Multiple = false
+                Multiple = true
             };
         }
 
@@ -21,6 +21,7 @@
                 return;
             MainThread.BeginInvokeOnMainThread(new Action(() =>
             {
+                DataStore.Results = e.Results;
                 // getting the first result.
                 string qrCodeValue = e.Results[0].Value;
                 qrResultLabel.Text = qrCodeValue;
@@ -31,11 +32,14 @@
                     resultIndicatorBorder.Stroke = new SolidColorBrush(Colors.Red);
                 else
                     resultIndicatorBorder.Stroke = new SolidColorBrush(Colors.Yellow);
+                graphicsView.Invalidate();
+               
             }));
 
             // We can create a viewmodel and bind the properties border stroke property using converters or data trigger to set.
             // Also, we can bind the result value property to label text
         }
+  
     }
 
 }
